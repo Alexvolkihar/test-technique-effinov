@@ -92,5 +92,23 @@ class RegistrationRequestTest extends KernelTestCase
         $errors = $this->validator->validate($request);
         $this->assertGreaterThan(0, count($errors));
     }
+
+    public function testUnderageCandidate(): void
+    {
+        $request = new RegistrationRequest();
+        $request->setFirstName('John')
+            ->setLastName('Doe')
+            ->setAddress('123 Fight Street')
+            // Born 10 years ago (minor)
+            ->setBirthDate((new \DateTime())->modify('-10 years'))
+            ->setSocialSecurityNumber('180051512345678')
+            ->setFighterNickname('TheOne')
+            ->setFighterCertificationNumber('CERFA-666-12345')
+            ->setPokemonStarter('Salamèche')
+            ->setEmailAddress('john.doe@example.com');
+
+        $errors = $this->validator->validate($request);
+        $this->assertGreaterThan(0, count($errors));
+    }
 }
 

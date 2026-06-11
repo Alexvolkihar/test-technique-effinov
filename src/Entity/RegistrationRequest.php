@@ -33,6 +33,7 @@ class RegistrationRequest
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     #[Assert\NotBlank(message: 'La date de naissance est obligatoire.')]
+    #[Assert\LessThanOrEqual(value: '-18 years', message: 'Vous devez être majeur pour vous inscrire.')]
     private ?\DateTimeInterface $birthDate = null;
 
     #[ORM\Column(type: Types::STRING, length: 255, unique: true)]
