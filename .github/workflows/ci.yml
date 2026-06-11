@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+    branches:
+      - '**'
+
+jobs:
+  tests:
+    name: Run Test Suite
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Cache Composer vendor folder on the host
+      - name: Cache Composer packages
+        id: composer-cache
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
+
+      - name: Start Docker services
+        run: docker compose up -d --build
+
+      - name: Wait for PHP container setup to complete
+        run: |
+          echo "Waiting for PHP container to finish initialization..."
+          timeout=120
+          elapsed=0
+          while ! docker compose logs php | grep -q "Docker container setup completed successfully"; do
+            if [ $elapsed -ge $timeout ]; then
+              echo "Timeout reached while waiting for PHP container setup."
+              docker compose logs php
+              exit 1
+            fi
+            sleep 2
+            elapsed=$((elapsed + 2))
+          done
+          echo "PHP container setup is complete and ready for testing."
+
+      - name: Run PHPUnit Tests
+        run: docker compose exec -T php vendor/bin/phpunit
+
+      - name: Run Behat Tests
+        run: docker compose exec -T php vendor/bin/behat

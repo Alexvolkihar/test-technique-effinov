@@ -24,9 +24,12 @@ Les consignes originales de ce test sont disponibles au format Markdown :
 
 ## 🚀 Installation et Démarrage
 
+### 📋 Prérequis
+* **Docker** et **Docker Compose** installés et fonctionnels sur votre machine.
+
 ### 1. Cloner le projet
 ```bash
-git clone https://github.com/AryyX/test-technique.git
+git clone https://github.com/Alexvolkihar/test-technique-effinov.git
 cd test-technique-effinov
 ```
 
@@ -103,6 +106,9 @@ Après un clic sur le lien de validation :
 
 7. L'utilisateur accède à la messagerie
 
+* **Note** : Des captures d'écran et une vidéo de présentation sont disponibles à la fin de ce README.
+
+
 ---
 
 ## 📧 Inspection des e-mails (Mailpit)
@@ -149,12 +155,39 @@ docker compose exec php vendor/bin/phpunit
 docker compose exec php vendor/bin/behat
 ```
 
+
+---
+
+## 📸 Aperçus & Démonstration
+
+### Captures d'écran de l'application
+
+* **Formulaire d'inscription :**
+  ![Formulaire d'inscription](specs/mabanza-alexis/Form.webp)
+
+* **Mailpit (Interception de l'e-mail de validation) :**
+  ![Mailpit](specs/mabanza-alexis/Mailpit.webp)
+
+* **Page de Connexion :**
+  ![Page de Connexion](specs/mabanza-alexis/login.webp)
+
+* **Portail Membre :**
+  ![Portail Membre](specs/mabanza-alexis/portal.webp)
+
+* **Messagerie Chiffrée :**
+  ![Messagerie Chiffrée](specs/mabanza-alexis/Chat.webp)
+
+### Démo Vidéo (Userflow)
+
+Une démonstration complète du parcours utilisateur est disponible en vidéo afin de faciliter l'échange durant la restitution:
+🎥 **[Visionner la vidéo UserFlow.webm](specs/mabanza-alexis/UserFlow.webm)**
+
 ---
 
 ## 📂 Architecture Documentaire
-Les spécifications et documentations techniques se trouvent dans le répertoire [specs/mabanza-alexis/](file:///Users/alexvolkihar/Documents/projetsPersos/test-technique-effinov/specs/mabanza-alexis/) :
-* [plan.md](file:///Users/alexvolkihar/Documents/projetsPersos/test-technique-effinov/specs/mabanza-alexis/plan.md) : Plan d'implémentation
-* [data-model.md](file:///Users/alexvolkihar/Documents/projetsPersos/test-technique-effinov/specs/mabanza-alexis/data-model.md) : Modèle de données & relations
-* [research.md](file:///Users/alexvolkihar/Documents/projetsPersos/test-technique-effinov/specs/mabanza-alexis/research.md) : Décisions techniques
-* [quickstart.md](file:///Users/alexvolkihar/Documents/projetsPersos/test-technique-effinov/specs/mabanza-alexis/quickstart.md) : Guide de démarrage rapide
-* [contracts/](file:///Users/alexvolkihar/Documents/projetsPersos/test-technique-effinov/specs/mabanza-alexis/contracts/) : Spécification des parcours utilisateurs
+Les spécifications et documentations techniques se trouvent dans le répertoire [specs/mabanza-alexis/](specs/mabanza-alexis/) :
+* [plan.md](specs/mabanza-alexis/plan.md) : Plan d'implémentation
+* [data-model.md](specs/mabanza-alexis/data-model.md) : Modèle de données & relations
+* [research.md](specs/mabanza-alexis/research.md) : Décisions techniques
+* [quickstart.md](specs/mabanza-alexis/quickstart.md) : Guide de démarrage rapide
+* [contracts/](specs/mabanza-alexis/contracts/) : Spécification des parcours utilisateurs
