@@ -60,16 +60,16 @@
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T010 [P] [US1] Write unit tests for RegistrationRequest entity validation in tests/Unit/Entity/RegistrationRequestTest.php
-- [ ] T011 [P] [US1] Write Behat scenarios for registration form submission in features/registration.feature
+- [x] T010 [P] [US1] Write unit tests for RegistrationRequest entity validation in tests/Unit/Entity/RegistrationRequestTest.php
+- [x] T011 [P] [US1] Write Behat scenarios for registration form submission in features/registration.feature
 
 ### Implementation for User Story 1
 
-- [ ] T012 [P] [US1] Create RegistrationRequest Doctrine entity and repository in src/Entity/RegistrationRequest.php and src/Repository/RegistrationRequestRepository.php
-- [ ] T013 [US1] Create RegistrationRequest database migration in migrations/
-- [ ] T014 [US1] Implement registration form component using Symfony UX in src/Twig/Components/RegistrationForm.php and templates/components/RegistrationForm.html.twig
-- [ ] T015 [US1] Implement registration controller and routes in src/Controller/RegistrationController.php and templates/registration/register.html.twig
-- [ ] T016 [US1] Add custom validators for uniqueness of SSN and CERFA 666 in src/Validator/UniqueRegistrationField.php and src/Validator/UniqueRegistrationFieldValidator.php
+- [x] T012 [P] [US1] Create RegistrationRequest Doctrine entity and repository in src/Entity/RegistrationRequest.php and src/Repository/RegistrationRequestRepository.php
+- [x] T013 [US1] Create RegistrationRequest database migration in migrations/
+- [x] T014 [US1] Implement registration form component using Symfony UX in src/Twig/Components/RegistrationForm.php and templates/components/RegistrationForm.html.twig
+- [x] T015 [US1] Implement registration controller and routes in src/Controller/RegistrationController.php and templates/registration/register.html.twig
+- [x] T016 [US1] Add custom validators for uniqueness of SSN and CERFA 666 in src/Validator/UniqueRegistrationField.php and src/Validator/UniqueRegistrationFieldValidator.php
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently
 

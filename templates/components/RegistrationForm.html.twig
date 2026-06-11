@@ -1,0 +1,66 @@
+<div {{ attributes }} class="card border-0 shadow-lg bg-dark text-white rounded-4 overflow-hidden">
+    <div class="card-body p-4 p-md-5">
+        <div class="text-center mb-4">
+            <h2 class="fw-bold" style="background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                Fight Club Registration
+            </h2>
+            <p class="text-muted small">Première règle : ne pas parler du club</p>
+        </div>
+
+        {{ form_start(form) }}
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label text-light small fw-semibold">Prénom</label>
+                    {{ form_widget(form.firstName, { attr: { 'class': 'form-control bg-secondary text-white border-0 py-2.5 rounded-3', 'placeholder': 'Tyler' } }) }}
+                    <div class="text-danger small mt-1">{{ form_errors(form.firstName) }}</div>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label text-light small fw-semibold">Nom</label>
+                    {{ form_widget(form.lastName, { attr: { 'class': 'form-control bg-secondary text-white border-0 py-2.5 rounded-3', 'placeholder': 'Durden' } }) }}
+                    <div class="text-danger small mt-1">{{ form_errors(form.lastName) }}</div>
+                </div>
+                <div class="col-12">
+                    <label class="form-label text-light small fw-semibold">Adresse</label>
+                    {{ form_widget(form.address, { attr: { 'class': 'form-control bg-secondary text-white border-0 py-2.5 rounded-3', 'placeholder': 'Paper Street, Wilmington', 'rows': '2' } }) }}
+                    <div class="text-danger small mt-1">{{ form_errors(form.address) }}</div>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label text-light small fw-semibold">Date de naissance</label>
+                    {{ form_widget(form.birthDate, { attr: { 'class': 'form-control bg-secondary text-white border-0 py-2.5 rounded-3' } }) }}
+                    <div class="text-danger small mt-1">{{ form_errors(form.birthDate) }}</div>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label text-light small fw-semibold">Adresse email</label>
+                    {{ form_widget(form.emailAddress, { attr: { 'class': 'form-control bg-secondary text-white border-0 py-2.5 rounded-3', 'placeholder': 'tyler@paperstreet.com' } }) }}
+                    <div class="text-danger small mt-1">{{ form_errors(form.emailAddress) }}</div>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label text-light small fw-semibold">Numéro de sécurité sociale</label>
+                    {{ form_widget(form.socialSecurityNumber, { attr: { 'class': 'form-control bg-secondary text-white border-0 py-2.5 rounded-3', 'placeholder': '180051512345678' } }) }}
+                    <div class="text-danger small mt-1">{{ form_errors(form.socialSecurityNumber) }}</div>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label text-light small fw-semibold">Numéro d'accréditation</label>
+                    {{ form_widget(form.fighterCertificationNumber, { attr: { 'class': 'form-control bg-secondary text-white border-0 py-2.5 rounded-3', 'placeholder': 'CERFA-666-XXX' } }) }}
+                    <div class="text-danger small mt-1">{{ form_errors(form.fighterCertificationNumber) }}</div>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label text-light small fw-semibold">Pseudo de combattant</label>
+                    {{ form_widget(form.fighterNickname, { attr: { 'class': 'form-control bg-secondary text-white border-0 py-2.5 rounded-3', 'placeholder': 'soap_maker' } }) }}
+                    <div class="text-danger small mt-1">{{ form_errors(form.fighterNickname) }}</div>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label text-light small fw-semibold">Starter Pokémon</label>
+                    {{ form_widget(form.pokemonStarter, { attr: { 'class': 'form-select bg-secondary text-white border-0 py-2.5 rounded-3' } }) }}
+                    <div class="text-danger small mt-1">{{ form_errors(form.pokemonStarter) }}</div>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <button type="submit" name="Soumettre" class="btn w-100 py-3 fw-bold text-white rounded-3 shadow border-0" style="background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%); transition: transform 0.2s ease;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+                    Soumettre la candidature
+                </button>
+            </div>
+        {{ form_end(form) }}
+    </div>
+</div>

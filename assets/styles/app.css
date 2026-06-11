@@ -25,3 +25,16 @@ body {
     background-color: rgba(255, 255, 255, 0.92) !important;
     backdrop-filter: blur(14px);
 }
+
+/* Cleanup Symfony form error lists */
+.text-danger ul,
+.invalid-feedback ul {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 0;
+}
+
+.form-control::placeholder {
+    color: rgba(255, 255, 255, 0.4) !important;
+}
+

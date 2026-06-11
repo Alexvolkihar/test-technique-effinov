@@ -6,7 +6,10 @@ use Behat\Config\Suite;
 use Behat\Config\Extension;
 
 $suite = (new Suite('default'))
-    ->withContexts(App\Tests\Behat\DemoContext::class);
+    ->withContexts(
+        App\Tests\Behat\DemoContext::class,
+        App\Tests\Behat\RegistrationContext::class
+    );
 
 $extension = new Extension('FriendsOfBehat\SymfonyExtension\ServiceContainer\SymfonyExtension', [
     'bootstrap' => 'tests/bootstrap.php',
