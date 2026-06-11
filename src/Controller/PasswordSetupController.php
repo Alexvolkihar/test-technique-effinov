@@ -6,12 +6,12 @@ namespace App\Controller;
 
 use App\Entity\ValidationToken;
 use App\Security\User;
+use App\Service\MemberActivationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
 class PasswordSetupController extends AbstractController
@@ -20,7 +20,7 @@ class PasswordSetupController extends AbstractController
     public function setupPassword(
         Request $request,
         EntityManagerInterface $entityManager,
-        UserPasswordHasherInterface $passwordHasher,
+        MemberActivationService $activationService,
         Security $security
     ): Response {
         /** @var User|null $user */
@@ -29,7 +29,6 @@ class PasswordSetupController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        // If the user is already active, redirect to portal
         if ('active' === $user->getStatus()) {
             return $this->redirectToRoute('app_portal_home');
         }
@@ -57,36 +56,26 @@ class PasswordSetupController extends AbstractController
             $password = $request->request->get('password');
             $confirmPassword = $request->request->get('confirm_password');
 
-            if (!$password || strlen($password) < 8) {
-                $error = 'Le mot de passe doit contenir au moins 8 caractères.';
-            } elseif ($password !== $confirmPassword) {
+            if ($password !== $confirmPassword) {
                 $error = 'Les mots de passe ne correspondent pas.';
             } else {
-                // Update member account
-                $hashedPassword = $passwordHasher->hashPassword($user, $password);
-                $memberAccount->setPasswordHash($hashedPassword);
-                $memberAccount->setStatus('active');
-                $memberAccount->setPasswordSetAt(new \DateTime());
+                try {
+                    $updatedAccount = $activationService->setupPassword($validationToken, (string)$password);
+                    $session->remove('password_setup_token_id');
 
-                // Consume token
-                $validationToken->setConsumedAt(new \DateTime());
+                    $updatedUser = new User(
+                        $updatedAccount->getId(),
+                        $updatedAccount->getEmailAddress(),
+                        $updatedAccount->getPasswordHash(),
+                        $updatedAccount->getStatus(),
+                        ['ROLE_USER']
+                    );
+                    $security->login($updatedUser, 'form_login', 'main');
 
-                $entityManager->flush();
-
-                // Clear token from session
-                $session->remove('password_setup_token_id');
-
-                // Refresh user session state
-                $updatedUser = new User(
-                    $memberAccount->getId(),
-                    $memberAccount->getEmailAddress(),
-                    $memberAccount->getPasswordHash(),
-                    $memberAccount->getStatus(),
-                    ['ROLE_USER']
-                );
-                $security->login($updatedUser, 'form_login', 'main');
-
-                return $this->redirectToRoute('app_portal_home');
+                    return $this->redirectToRoute('app_portal_home');
+                } catch (\InvalidArgumentException $e) {
+                    $error = $e->getMessage();
+                }
             }
         }
 

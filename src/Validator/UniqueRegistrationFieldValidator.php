@@ -22,15 +22,34 @@ class UniqueRegistrationFieldValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, UniqueRegistrationField::class);
         }
 
-        if (null === $value || '' === $value) {
+        if (null === $value) {
             return;
         }
 
-        $existing = $this->repository->findOneBy([$constraint->field => $value]);
+        if ($value instanceof \App\Entity\RegistrationRequest) {
+            $field = $constraint->field;
+            $getter = 'get' . ucfirst($field);
+            if (!method_exists($value, $getter)) {
+                throw new \InvalidArgumentException(sprintf('Getter method "%s" does not exist on class %s', $getter, $value::class));
+            }
+            $fieldValue = $value->$getter();
+        } else {
+            $fieldValue = $value;
+        }
 
-        // If entity is being edited, we should check it's not the same entity.
-        // In our case, we only register new applications, so any match is a violation.
+        if (null === $fieldValue || '' === $fieldValue) {
+            return;
+        }
+
+        $existing = $this->repository->findOneBy([$constraint->field => $fieldValue]);
+
         if ($existing !== null) {
+            foreach ($this->context->getViolations() as $violation) {
+                if ($violation->getMessage() === $constraint->message) {
+                    return;
+                }
+            }
+
             $this->context->buildViolation($constraint->message)
                 ->addViolation();
         }

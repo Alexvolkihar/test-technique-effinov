@@ -31,3 +31,8 @@ docs/dev
 /phpunit.xml
 /.phpunit.cache/
 ###< phpunit/phpunit ###
+
+# macOS system files
+.DS_Store
+**/.DS_Store
+

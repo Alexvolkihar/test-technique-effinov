@@ -6,7 +6,7 @@ namespace App\Validator;
 
 use Symfony\Component\Validator\Constraint;
 
-#[\Attribute(\Attribute::TARGET_PROPERTY)]
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_PROPERTY | \Attribute::IS_REPEATABLE)]
 class UniqueRegistrationField extends Constraint
 {
     public string $message = 'Cette valeur est déjà utilisée.';
@@ -38,5 +38,13 @@ class UniqueRegistrationField extends Constraint
     public function getRequiredOptions(): array
     {
         return ['field'];
+    }
+
+    /**
+     * @return string|array<string>
+     */
+    public function getTargets(): string|array
+    {
+        return [self::CLASS_CONSTRAINT, self::PROPERTY_CONSTRAINT];
     }
 }

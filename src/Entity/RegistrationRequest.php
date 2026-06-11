@@ -12,6 +12,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: RegistrationRequestRepository::class)]
 #[ORM\Table(name: 'registration_requests')]
+#[UniqueRegistrationField(field: 'socialSecurityNumber', message: "Une demande d'inscription existe déjà pour les informations fournies.")]
+#[UniqueRegistrationField(field: 'fighterCertificationNumber', message: "Une demande d'inscription existe déjà pour les informations fournies.")]
+#[UniqueRegistrationField(field: 'emailAddress', message: "Une demande d'inscription existe déjà pour les informations fournies.")]
 class RegistrationRequest
 {
     #[ORM\Id]
@@ -39,7 +42,6 @@ class RegistrationRequest
     #[ORM\Column(type: Types::STRING, length: 255, unique: true)]
     #[Assert\NotBlank(message: 'Le numéro de sécurité sociale est obligatoire.')]
     #[Assert\Regex(pattern: '/^[0-9]{15}$/', message: 'Le numéro de sécurité sociale doit être composé de 15 chiffres.')]
-    #[UniqueRegistrationField(field: 'socialSecurityNumber', message: "Une demande d'inscription existe déjà pour les informations fournies.")]
     private ?string $socialSecurityNumber = null;
 
     #[ORM\Column(type: Types::STRING, length: 255)]
@@ -49,7 +51,6 @@ class RegistrationRequest
     #[ORM\Column(type: Types::STRING, length: 255, unique: true)]
     #[Assert\NotBlank(message: 'Le numéro d\'accréditation CERFA 666 est obligatoire.')]
     #[Assert\Regex(pattern: '/^CERFA-666-[a-zA-Z0-9]+$/', message: 'Le numéro d\'accréditation doit respecter le format CERFA-666-XXX.')]
-    #[UniqueRegistrationField(field: 'fighterCertificationNumber', message: "Une demande d'inscription existe déjà pour les informations fournies.")]
     private ?string $fighterCertificationNumber = null;
 
     #[ORM\Column(type: Types::STRING, length: 255)]

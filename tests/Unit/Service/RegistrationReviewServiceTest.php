@@ -48,7 +48,7 @@ class RegistrationReviewServiceTest extends TestCase
             ->setStatus('pending');
 
         $em = $this->createMock(EntityManagerInterface::class);
-        $emailSender = $this->createMock(ValidationEmailSender::class);
+        $emailSender = $this->createStub(ValidationEmailSender::class);
 
         $em->expects($this->once())
             ->method('flush');

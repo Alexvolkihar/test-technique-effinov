@@ -8,6 +8,15 @@
         </div>
 
         {{ form_start(form) }}
+            {% if form.vars.errors|length > 0 %}
+                <div class="alert alert-danger border-0 shadow-sm rounded-3 mb-4 p-3 bg-danger text-white">
+                    <ul class="mb-0 ps-3 text-danger text-white">
+                        {% for error in form.vars.errors %}
+                            <li>{{ error.message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
             <div class="row g-3">
                 <div class="col-md-6">
                     <label class="form-label text-light small fw-semibold">Prénom</label>

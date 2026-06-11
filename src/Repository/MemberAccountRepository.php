@@ -17,4 +17,18 @@ class MemberAccountRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, MemberAccount::class);
     }
+
+    /**
+     * @return MemberAccount[]
+     */
+    public function findActiveMembersExcept(MemberAccount $member): array
+    {
+        return $this->createQueryBuilder('m')
+            ->where('m.status = :status')
+            ->andWhere('m.id != :memberId')
+            ->setParameter('status', 'active')
+            ->setParameter('memberId', $member->getId())
+            ->getQuery()
+            ->getResult();
+    }
 }
