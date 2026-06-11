@@ -1,0 +1,14 @@
+# Dossiers de releases et builds temporaires de Spec-Kit
+.genreleases/
+*.zip
+sdd-*/
+docs/dev
+
+# Système d'extensions et caches de Spec-Kit
+.specify/extensions/.cache/
+.specify/extensions/.backup/
+.specify/extensions/*/local-config.yml
+
+# Fichiers de configuration locale ou secrets (si applicables)
+.env
+.env.local
