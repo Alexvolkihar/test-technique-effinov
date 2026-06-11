@@ -22,15 +22,22 @@
     <body class="bg-body-tertiary text-body">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom border-danger-subtle shadow-sm">
             <div class="container">
-                <a class="navbar-brand fw-semibold text-uppercase tracking-wide" href="#">FightClubPortal</a>
+                <a class="navbar-brand fw-semibold text-uppercase tracking-wide" href="{{ app.user ? path('app_portal_home') : path('app_registration') }}">FightClubPortal</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="mainNav">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <li class="nav-item"><a class="nav-link active" href="#">Accueil</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#">S'inscrire</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#">Se connecter</a></li>
+                        {% if app.user %}
+                            {% if app.user.status == 'active' %}
+                                <li class="nav-item"><a class="nav-link" href="{{ path('app_portal_home') }}">Portail</a></li>
+                                <li class="nav-item"><a class="nav-link" href="{{ path('app_messages') }}">Messages</a></li>
+                            {% endif %}
+                            <li class="nav-item"><a class="nav-link" href="{{ path('app_logout') }}">Déconnexion</a></li>
+                        {% else %}
+                            <li class="nav-item"><a class="nav-link" href="{{ path('app_registration') }}">S'inscrire</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ path('app_login') }}">Se connecter</a></li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>

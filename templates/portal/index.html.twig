@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Portail Membre - FightClub{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card border-0 shadow-lg bg-dark text-white rounded-4 p-4 mb-4">
+                <div class="d-flex align-items-center justify-content-between mb-4">
+                    <div>
+                        <span class="badge bg-danger text-uppercase mb-2">Accès Autorisé</span>
+                        <h1 class="h2 fw-bold mb-0">Bienvenue au Fight Club</h1>
+                    </div>
+                    <div class="text-end">
+                        <span class="fs-4 fw-mono text-danger font-monospace">{{ member.displayNumber }}</span>
+                    </div>
+                </div>
+                
+                <div class="p-4 bg-secondary bg-opacity-25 rounded-4 mb-4">
+                    <p class="lead mb-0">Vous êtes connecté en tant que <strong class="text-white">{{ member.emailAddress }}</strong>.</p>
+                    <p class="small text-secondary mt-2 mb-0">Votre compte a été approuvé le {{ member.approvedAt|date('d/m/Y à H:i') }}.</p>
+                </div>
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <a href="{{ path('app_messages') }}" class="btn btn-lg w-100 py-3 text-white fw-bold rounded-3 border-0" style="background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);">
+                            Messagerie Secrète
+                        </a>
+                    </div>
+                    <div class="col-md-6">
+                        <a href="{{ path('app_logout') }}" class="btn btn-lg btn-outline-secondary w-100 py-3 fw-bold rounded-3">
+                            Se déconnecter
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -132,8 +132,8 @@ final class PasswordSetupContext implements Context
             throw new \RuntimeException(sprintf('Expected path /portail, got %s', $path));
         }
         $content = $this->client->getResponse()->getContent();
-        if (!str_contains($content, 'Bienvenue sur le portail secret.')) {
-            throw new \RuntimeException('Expected response to contain "Bienvenue sur le portail secret."');
+        if (!str_contains($content, 'Bienvenue au Fight Club')) {
+            throw new \RuntimeException('Expected response to contain "Bienvenue au Fight Club"');
         }
     }
 

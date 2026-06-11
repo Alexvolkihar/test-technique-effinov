@@ -99,7 +99,7 @@ class PasswordSetupControllerTest extends WebTestCase
         $this->assertResponseRedirects('/portail');
         $this->client->followRedirect();
         $this->assertResponseIsSuccessful();
-        $this->assertStringContainsString('Bienvenue sur le portail secret.', $this->client->getResponse()->getContent());
+        $this->assertStringContainsString('Bienvenue au Fight Club', $this->client->getResponse()->getContent());
 
         // 9. Verify database changes
         $this->em->clear();

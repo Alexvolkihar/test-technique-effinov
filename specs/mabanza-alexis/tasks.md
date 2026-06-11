@@ -129,16 +129,16 @@
 
 ### Tests for User Story 4
 
-- [ ] T031 [P] [US4] Write functional tests for private messaging in tests/Functional/Controller/MessageControllerTest.php
-- [ ] T032 [P] [US4] Write Behat scenarios for secure message exchange in features/private_messaging.feature
+- [x] T031 [P] [US4] Write functional tests for private messaging in tests/Functional/Controller/MessageControllerTest.php
+- [x] T032 [P] [US4] Write Behat scenarios for secure message exchange in features/private_messaging.feature
 
 ### Implementation for User Story 4
 
-- [ ] T033 [P] [US4] Create Message entity and repository in src/Entity/Message.php and src/Repository/MessageRepository.php
-- [ ] T034 [US4] Create Message database migration in migrations/
-- [ ] T035 [US4] Implement portal home dashboard in src/Controller/PortalController.php and templates/portal/index.html.twig
-- [ ] T036 [US4] Implement private messaging controller and UI in src/Controller/MessageController.php and templates/portal/messages.html.twig
-- [ ] T037 [US4] Add security authorization checks to ensure only active participants see a message in src/Security/MessageVoter.php
+- [x] T033 [P] [US4] Create Message entity and repository in src/Entity/Message.php and src/Repository/MessageRepository.php
+- [x] T034 [US4] Create Message database migration in migrations/
+- [x] T035 [US4] Implement portal home dashboard in src/Controller/PortalController.php and templates/portal/index.html.twig
+- [x] T036 [US4] Implement private messaging controller and UI in src/Controller/MessageController.php and templates/portal/messages.html.twig
+- [x] T037 [US4] Add security authorization checks to ensure only active participants see a message in src/Security/MessageVoter.php
 
 ---
 
