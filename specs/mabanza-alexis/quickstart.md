@@ -5,23 +5,40 @@
 - Docker and Docker Compose installed
 - A local checkout of the repository
 
+## Installation
+
+1. Clone the repository and enter the project directory.
+
+```bash
+git clone <URL_DU_DEPOT>
+cd test-technique
+```
+
+2. Copy the example environment file.
+
+```bash
+cp .env.example .env.local
+```
+
 ## Environment Setup
 
-1. Start the application stack.
+3. Start the application stack.
 
 ```bash
 docker compose up -d --build
 ```
 
-2. Install PHP dependencies inside the application container.
+All required configuration (running `composer install`, waiting for the database server, creating the database, and running the Doctrine migrations) is automatically completed on container startup. A single `docker compose up -d --build` command is sufficient.
+
+Once the containers are up, open the app at:
+
+- [http://localhost:8000](http://localhost:8000)
+
+You can also run these manually if needed:
 
 ```bash
+# Manual installation and migration commands:
 docker compose exec php composer install
-```
-
-3. Create and migrate the database.
-
-```bash
 docker compose exec php bin/console doctrine:database:create --if-not-exists
 docker compose exec php bin/console doctrine:migrations:migrate --no-interaction
 ```
@@ -31,6 +48,27 @@ docker compose exec php bin/console doctrine:migrations:migrate --no-interaction
 ```bash
 open http://localhost:8025
 ```
+
+5. List registration requests from the CLI.
+
+```bash
+docker compose exec php bin/console app:list-registrations
+docker compose exec php bin/console app:list-registrations pending --limit=10
+```
+
+## Flux d'inscription
+
+1. Se rendre sur [http://localhost:8080/register](http://localhost:8080/register)
+
+2. Remplir le formulaire d'inscription
+
+3. Un administrateur valide l'inscription via la commande CLI
+
+4. L'utilisateur reçoit un email avec un lien de validation
+
+5. L'utilisateur crée son mot de passe
+
+6. L'utilisateur accède au portail
 
 ## Validation Scenarios
 

@@ -1,7 +1,6 @@
 .git
 .gitignore
 .dockerignore
-docker/
 node_modules/
 vendor/
 var/

@@ -146,10 +146,10 @@
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T038 Update README.md with detailed instructions on running Docker, migrations, testing tools, console command, and Mailpit
-- [ ] T039 Create document d'architecture, relational schema, class UML, and flow diagrams under specs/mabanza-alexis/
-- [ ] T040 Security audit to verify that no sensitive fields are leaked in logs or error templates
-- [ ] T041 Run the entire test suite and quickstart scenarios to validate Docker reproducibility
+- [x] T038 Update README.md with detailed instructions on running Docker, migrations, testing tools, console command, and Mailpit
+- [x] T039 Create document d'architecture, relational schema, class UML, and flow diagrams under specs/mabanza-alexis/
+- [x] T040 Security audit to verify that no sensitive fields are leaked in logs or error templates
+- [x] T041 Run the entire test suite and quickstart scenarios to validate Docker reproducibility
 
 ---
 
@@ -185,19 +185,6 @@
 - Once Foundational phase completes, user stories can start in parallel (if team capacity allows)
 - All tests for a user story marked [P] can run in parallel
 - Models within a story marked [P] can run in parallel
-
----
-
-## Parallel Example: User Story 1
-
-```bash
-# Launch all models for User Story 1 together:
-Task: "Create RegistrationRequest Doctrine entity and repository in src/Entity/RegistrationRequest.php and src/Repository/RegistrationRequestRepository.php"
-
-# Launch all tests for User Story 1 together:
-Task: "Write unit tests for RegistrationRequest entity validation in tests/Unit/Entity/RegistrationRequestTest.php"
-Task: "Write Behat scenarios for registration form submission in features/registration.feature"
-```
 
 ---
 

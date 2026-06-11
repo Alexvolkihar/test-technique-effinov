@@ -38,3 +38,10 @@ body {
     color: rgba(255, 255, 255, 0.4) !important;
 }
 
+/* Footer specific styling and hover effect */
+.hover-light {
+    transition: color 0.2s ease-in-out;
+}
+.hover-light:hover {
+    color: var(--bs-light) !important;
+}

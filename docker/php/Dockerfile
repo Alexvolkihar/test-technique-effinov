@@ -25,7 +25,12 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
 # Get Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
+COPY docker/php/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
+RUN chmod +x /usr/local/bin/docker-entrypoint
+
 WORKDIR /var/www/html
+
+ENTRYPOINT ["docker-entrypoint"]
 
 EXPOSE 9000
 
