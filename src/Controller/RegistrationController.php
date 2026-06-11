@@ -35,4 +35,10 @@ class RegistrationController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    #[Route('/validation/{token}', name: 'app_validation_landing', methods: ['GET'])]
+    public function validateToken(string $token): Response
+    {
+        return new Response('Token page placeholder: ' . $token);
+    }
 }
