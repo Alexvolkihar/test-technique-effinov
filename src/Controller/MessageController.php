@@ -53,23 +53,33 @@ class MessageController extends AbstractController
 
         if ($request->isMethod('POST')) {
             $body = (string)$request->request->get('body');
+            $csrfToken = $request->request->get('_token');
             
             if ($request->request->has('recipient_id')) {
-                $recipientId = (int)$request->request->get('recipient_id');
-                $recipient = $memberRepository->find($recipientId);
-                
-                try {
-                    $messageService->sendMessage($member, $recipient, $body);
-                    return $this->redirectToRoute('app_messages', ['contact' => $recipient->getId()]);
-                } catch (InvalidMessageException $e) {
-                    $error = $e->getMessage();
+                if (!$this->isCsrfTokenValid('new_conversation', $csrfToken)) {
+                    $error = 'Jeton CSRF invalide.';
+                } else {
+                    $recipientId = (int)$request->request->get('recipient_id');
+                    $recipient = $memberRepository->find($recipientId);
+                    
+                    try {
+                        $messageService->sendMessage($member, $recipient, $body);
+                        return $this->redirectToRoute('app_messages', ['contact' => $recipient->getId()]);
+                    } catch (InvalidMessageException $e) {
+                        $error = $e->getMessage();
+                    }
                 }
             } else {
-                try {
-                    $messageService->sendMessage($member, $activeContact, $body);
-                    return $this->redirectToRoute('app_messages', ['contact' => $activeContact->getId()]);
-                } catch (InvalidMessageException $e) {
-                    $error = $e->getMessage();
+                $activeContactId = $activeContact ? (string)$activeContact->getId() : '';
+                if (!$this->isCsrfTokenValid('send_message_' . $activeContactId, $csrfToken)) {
+                    $error = 'Jeton CSRF invalide.';
+                } else {
+                    try {
+                        $messageService->sendMessage($member, $activeContact, $body);
+                        return $this->redirectToRoute('app_messages', ['contact' => $activeContact->getId()]);
+                    } catch (InvalidMessageException $e) {
+                        $error = $e->getMessage();
+                    }
                 }
             }
         }

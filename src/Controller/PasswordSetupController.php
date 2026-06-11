@@ -55,8 +55,11 @@ class PasswordSetupController extends AbstractController
         if ($request->isMethod('POST')) {
             $password = $request->request->get('password');
             $confirmPassword = $request->request->get('confirm_password');
+            $csrfToken = $request->request->get('_token');
 
-            if ($password !== $confirmPassword) {
+            if (!$this->isCsrfTokenValid('password_setup', $csrfToken)) {
+                $error = 'Jeton CSRF invalide.';
+            } elseif ($password !== $confirmPassword) {
                 $error = 'Les mots de passe ne correspondent pas.';
             } else {
                 try {

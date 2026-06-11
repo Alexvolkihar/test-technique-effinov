@@ -30,6 +30,7 @@
                         <!-- New Discussion Form -->
                         {% if recipients is not empty %}
                             <form action="{{ path('app_messages') }}" method="post" class="mb-4">
+                                <input type="hidden" name="_token" value="{{ csrf_token('new_conversation') }}">
                                 <div class="mb-2">
                                     <select name="recipient_id" class="form-select form-select-sm bg-secondary text-white border-0 rounded-3" required>
                                         <option value="" disabled selected>Nouvelle discussion...</option>
@@ -90,6 +91,7 @@
                             </div>
 
                             <form action="{{ path('app_messages', {'contact': activeContact.id}) }}" method="post" class="mt-auto">
+                                <input type="hidden" name="_token" value="{{ csrf_token('send_message_' ~ activeContact.id) }}">
                                 <div class="input-group">
                                     <input type="text" name="body" class="form-control bg-secondary text-white border-0 py-2 rounded-start-3" placeholder="Tapez votre message secret..." required autofocus>
                                     <button type="submit" class="btn text-white fw-bold rounded-end-3 border-0" style="background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);">Envoyer</button>
