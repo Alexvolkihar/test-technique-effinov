@@ -83,17 +83,17 @@
 
 ### Tests for User Story 2
 
-- [ ] T017 [P] [US2] Write unit tests for RegistrationReviewService in tests/Unit/Service/RegistrationReviewServiceTest.php
-- [ ] T018 [P] [US2] Write functional tests for review command in tests/Functional/Command/ReviewRegistrationCommandTest.php
+- [x] T017 [P] [US2] Write unit tests for RegistrationReviewService in tests/Unit/Service/RegistrationReviewServiceTest.php
+- [x] T018 [P] [US2] Write functional tests for review command in tests/Functional/Command/ReviewRegistrationCommandTest.php
 
 ### Implementation for User Story 2
 
-- [ ] T019 [P] [US2] Create MemberAccount entity and repository in src/Entity/MemberAccount.php and src/Repository/MemberAccountRepository.php
-- [ ] T020 [P] [US2] Create ValidationToken entity and repository in src/Entity/ValidationToken.php and src/Repository/ValidationTokenRepository.php
-- [ ] T021 [US2] Create MemberAccount and ValidationToken migration in migrations/
-- [ ] T022 [US2] Implement RegistrationReviewService containing approval and rejection business rules in src/Service/RegistrationReviewService.php
-- [ ] T023 [US2] Implement console review command in src/Command/ReviewRegistrationCommand.php
-- [ ] T024 [US2] Create ValidationEmailSender service to send personal validation link in src/Service/ValidationEmailSender.php
+- [x] T019 [P] [US2] Create MemberAccount entity and repository in src/Entity/MemberAccount.php and src/Repository/MemberAccountRepository.php
+- [x] T020 [P] [US2] Create ValidationToken entity and repository in src/Entity/ValidationToken.php and src/Repository/ValidationTokenRepository.php
+- [x] T021 [US2] Create MemberAccount and ValidationToken migration in migrations/
+- [x] T022 [US2] Implement RegistrationReviewService containing approval and rejection business rules in src/Service/RegistrationReviewService.php
+- [x] T023 [US2] Implement console review command in src/Command/ReviewRegistrationCommand.php
+- [x] T024 [US2] Create ValidationEmailSender service to send personal validation link in src/Service/ValidationEmailSender.php
 
 **Checkpoint**: At this point, User Stories 1 AND 2 should both work independently
 
