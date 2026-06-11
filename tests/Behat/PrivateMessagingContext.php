@@ -171,4 +171,46 @@ final class PrivateMessagingContext implements Context
             throw new \RuntimeException("Expected message body '$body' to NOT be visible in thread, but it was found.");
         }
     }
+
+    #[Then('I should see the active conversation with :displayNumber in the sidebar')]
+    public function iShouldSeeTheActiveConversationWithInTheSidebar(string $displayNumber): void
+    {
+        $content = $this->client->getResponse()->getContent();
+        if (!str_contains($content, 'class="list-group-item') || !str_contains($content, $displayNumber)) {
+            throw new \RuntimeException(sprintf('Expected conversation with %s in sidebar.', $displayNumber));
+        }
+    }
+
+    #[When('I send a message :body to the active contact')]
+    public function iSendMessageToTheActiveContact(string $body): void
+    {
+        $form = $this->crawler->selectButton('Envoyer')->form();
+        $this->crawler = $this->client->submit($form, [
+            'body' => $body,
+        ]);
+    }
+
+    #[Then('the sidebar should not contain conversation with :displayNumber')]
+    public function theSidebarShouldNotContainConversationWith(string $displayNumber): void
+    {
+        $content = $this->client->getResponse()->getContent();
+        if (str_contains($content, 'class="list-group-item') && str_contains($content, $displayNumber)) {
+            throw new \RuntimeException(sprintf('Did not expect conversation with %s in sidebar.', $displayNumber));
+        }
+    }
+
+    #[When('I start a new conversation with :displayNumber and body :body')]
+    public function iStartANewConversationWithAndBody(string $displayNumber, string $body): void
+    {
+        $recipient = $this->entityManager->getRepository(MemberAccount::class)->findOneBy(['displayNumber' => $displayNumber]);
+        if (!$recipient) {
+            throw new \RuntimeException("Recipient not found.");
+        }
+
+        $form = $this->crawler->selectButton('Démarrer la discussion')->form();
+        $this->crawler = $this->client->submit($form, [
+            'recipient_id' => $recipient->getId(),
+            'body' => $body,
+        ]);
+    }
 }

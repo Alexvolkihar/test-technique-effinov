@@ -120,4 +120,9 @@ class MemberAccount
         $this->passwordSetAt = $passwordSetAt;
         return $this;
     }
+
+    public function getNickname(): ?string
+    {
+        return $this->registrationRequest?->getFighterNickname();
+    }
 }

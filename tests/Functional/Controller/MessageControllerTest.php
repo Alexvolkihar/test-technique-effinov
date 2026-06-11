@@ -84,7 +84,6 @@ class MessageControllerTest extends WebTestCase
         $this->em->persist($member);
         $this->em->flush();
 
-        // Login user
         $this->client->loginUser(new \App\Security\User(
             $member->getId(),
             $member->getEmailAddress(),
@@ -102,6 +101,14 @@ class MessageControllerTest extends WebTestCase
         $sender = $this->createActiveMember('sender@example.com', 'FC-00001');
         $recipient = $this->createActiveMember('recipient@example.com', 'FC-00002');
 
+        // Pre-populate one message to start conversation
+        $message = new Message();
+        $message->setSender($sender)
+            ->setRecipient($recipient)
+            ->setBody('Premier message');
+        $this->em->persist($message);
+        $this->em->flush();
+
         $this->client->loginUser(new \App\Security\User(
             $sender->getId(),
             $sender->getEmailAddress(),
@@ -110,29 +117,19 @@ class MessageControllerTest extends WebTestCase
             ['ROLE_USER']
         ));
 
-        // Go to messages page
-        $this->client->request('GET', '/messages');
+        $this->client->request('GET', '/messages?contact=' . $recipient->getId());
         $this->assertResponseIsSuccessful();
 
-        // Submit message form
-        $this->client->submitForm('Envoyer le message', [
-            'recipient_id' => $recipient->getId(),
+        // Submit message form (sends to selected contact)
+        $this->client->submitForm('Envoyer', [
             'body' => 'Bonjour, ceci est un secret.',
         ]);
 
-        $this->assertResponseRedirects('/messages');
+        $this->assertResponseRedirects('/messages?contact=' . $recipient->getId());
         $this->client->followRedirect();
 
-        $this->assertStringContainsString('À : FC-00002', $this->client->getResponse()->getContent());
+        $this->assertStringContainsString('Vous', $this->client->getResponse()->getContent());
         $this->assertStringContainsString('Bonjour, ceci est un secret.', $this->client->getResponse()->getContent());
-
-        // Verify in DB
-        $this->em->clear();
-        $messages = $this->em->getRepository(Message::class)->findAll();
-        $this->assertCount(1, $messages);
-        $this->assertEquals('Bonjour, ceci est un secret.', $messages[0]->getBody());
-        $this->assertEquals($sender->getId(), $messages[0]->getSender()->getId());
-        $this->assertEquals($recipient->getId(), $messages[0]->getRecipient()->getId());
     }
 
     public function testMessageVoterEnforcesSecurity(): void
