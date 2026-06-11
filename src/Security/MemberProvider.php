@@ -9,12 +9,29 @@ use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
+use App\Repository\MemberAccountRepository;
+
 class MemberProvider implements UserProviderInterface
 {
+    public function __construct(
+        private MemberAccountRepository $memberAccountRepository
+    ) {
+    }
+
     public function loadUserByIdentifier(string $identifier): UserInterface
     {
-        // Placeholder - will load from database in User Story 3
-        throw new UserNotFoundException();
+        $memberAccount = $this->memberAccountRepository->findOneBy(['emailAddress' => $identifier]);
+        if (!$memberAccount) {
+            throw new UserNotFoundException(sprintf('User "%s" not found.', $identifier));
+        }
+
+        return new User(
+            $memberAccount->getId(),
+            $memberAccount->getEmailAddress(),
+            $memberAccount->getPasswordHash(),
+            $memberAccount->getStatus(),
+            ['ROLE_USER']
+        );
     }
 
     public function refreshUser(UserInterface $user): UserInterface

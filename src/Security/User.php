@@ -15,7 +15,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __construct(
         private int $id,
         private string $email,
-        private string $passwordHash,
+        private ?string $passwordHash,
         private string $status,
         private array $roles = ['ROLE_USER']
     ) {

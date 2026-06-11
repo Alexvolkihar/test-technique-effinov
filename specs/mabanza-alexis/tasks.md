@@ -107,15 +107,15 @@
 
 ### Tests for User Story 3
 
-- [ ] T025 [P] [US3] Write unit and functional tests for token verification and password creation in tests/Functional/Controller/PasswordSetupControllerTest.php
-- [ ] T026 [P] [US3] Write Behat scenarios for validation link click and password setup journey in features/password_setup.feature
+- [x] T025 [P] [US3] Write unit and functional tests for token verification and password creation in tests/Functional/Controller/PasswordSetupControllerTest.php
+- [x] T026 [P] [US3] Write Behat scenarios for validation link click and password setup journey in features/password_setup.feature
 
 ### Implementation for User Story 3
 
-- [ ] T027 [US3] Implement token verification logic and redirect in src/Controller/ValidationController.php
-- [ ] T028 [US3] Implement password setup page with form validation in src/Controller/PasswordSetupController.php and templates/auth/password_setup.html.twig
-- [ ] T029 [US3] Implement security voter or subscriber to block all portal access for awaiting_password accounts in src/Security/PasswordSetupRequiredSubscriber.php
-- [ ] T030 [US3] Update User provider and authentication configuration to support login after activation in src/Security/MemberProvider.php and config/packages/security.yaml
+- [x] T027 [US3] Implement token verification logic and redirect in src/Controller/ValidationController.php
+- [x] T028 [US3] Implement password setup page with form validation in src/Controller/PasswordSetupController.php and templates/auth/password_setup.html.twig
+- [x] T029 [US3] Implement security voter or subscriber to block all portal access for awaiting_password accounts in src/Security/PasswordSetupRequiredSubscriber.php
+- [x] T030 [US3] Update User provider and authentication configuration to support login after activation in src/Security/MemberProvider.php and config/packages/security.yaml
 
 **Checkpoint**: All user stories should now be independently functional
 

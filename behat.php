@@ -8,7 +8,8 @@ use Behat\Config\Extension;
 $suite = (new Suite('default'))
     ->withContexts(
         App\Tests\Behat\DemoContext::class,
-        App\Tests\Behat\RegistrationContext::class
+        App\Tests\Behat\RegistrationContext::class,
+        App\Tests\Behat\PasswordSetupContext::class
     );
 
 $extension = new Extension('FriendsOfBehat\SymfonyExtension\ServiceContainer\SymfonyExtension', [
