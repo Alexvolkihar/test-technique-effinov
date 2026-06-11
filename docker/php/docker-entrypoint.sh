@@ -1,6 +1,12 @@
 #!/bin/sh
 set -e
 
+# Create .env from .env.example if it doesn't exist
+if [ ! -f .env ] && [ -f .env.example ]; then
+    echo "Creating .env from .env.example..."
+    cp .env.example .env
+fi
+
 # Run composer install if composer.json is present
 if [ -f composer.json ]; then
     echo "Running composer install..."

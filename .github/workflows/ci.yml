@@ -17,6 +17,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Create .env file
+        run: cp .env.example .env
+
       # Cache Composer vendor folder on the host
       - name: Cache Composer packages
         id: composer-cache
