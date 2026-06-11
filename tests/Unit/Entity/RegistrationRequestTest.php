@@ -58,4 +58,39 @@ class RegistrationRequestTest extends KernelTestCase
         $errors = $this->validator->validate($request);
         $this->assertGreaterThan(0, count($errors));
     }
+
+    public function testInvalidSocialSecurityNumber(): void
+    {
+        $request = new RegistrationRequest();
+        $request->setFirstName('John')
+            ->setLastName('Doe')
+            ->setAddress('123 Fight Street')
+            ->setBirthDate(new \DateTime('1990-01-01'))
+            ->setSocialSecurityNumber('12345') // Invalid (less than 15 digits)
+            ->setFighterNickname('TheOne')
+            ->setFighterCertificationNumber('CERFA-666-12345')
+            ->setPokemonStarter('Salamèche')
+            ->setEmailAddress('john.doe@example.com');
+
+        $errors = $this->validator->validate($request);
+        $this->assertGreaterThan(0, count($errors));
+    }
+
+    public function testInvalidFighterCertificationNumber(): void
+    {
+        $request = new RegistrationRequest();
+        $request->setFirstName('John')
+            ->setLastName('Doe')
+            ->setAddress('123 Fight Street')
+            ->setBirthDate(new \DateTime('1990-01-01'))
+            ->setSocialSecurityNumber('180051512345678')
+            ->setFighterNickname('TheOne')
+            ->setFighterCertificationNumber('CERFA-777-12345') // Invalid (not 666)
+            ->setPokemonStarter('Salamèche')
+            ->setEmailAddress('john.doe@example.com');
+
+        $errors = $this->validator->validate($request);
+        $this->assertGreaterThan(0, count($errors));
+    }
 }
+
