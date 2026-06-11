@@ -1,0 +1,15 @@
+.git
+.gitignore
+.dockerignore
+docker/
+node_modules/
+vendor/
+var/
+.env.local
+.env.local.php
+.env.spec
+tests/_output/
+tests/_support/_generated/
+phpunit.xml
+behat.yml
+*.log

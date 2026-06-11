@@ -1,140 +1,221 @@
----
-description: "Generated tasks for FightClubPortal feature"
----
-
 # Tasks: FightClubPortal
 
-**Input**: Design documents in specs/mabanza-alexis/ (plan.md, spec.md, data-model.md, contracts/)
+**Input**: Design documents from `/specs/mabanza-alexis/`
+
+**Prerequisites**: plan.md (required), spec.md (required for user stories), research.md, data-model.md, contracts/
+
+**Tests**: Unit, functional, and Behat tests are included as they cover constitution-critical flows such as registration, approval, password setup, login, security, and Docker validation.
+
+**Quality**: Tasks MUST preserve SOLID with simple architecture, explicit naming, and strict typing for PHP code. The same readability standard applies to test code.
+
+**Organization**: Tasks are grouped by user story to enable independent implementation and testing of each story.
+
+## Format: `[ID] [P?] [Story] Description`
+
+- **[P]**: Can run in parallel (different files, no dependencies)
+- **[Story]**: Which user story this task belongs to (e.g., US1, US2, US3)
+- Include exact file paths in descriptions
+
+## Path Conventions
+
+- **Single project**: `src/`, `tests/` at repository root
+- Paths shown below assume single project.
+
+---
 
 ## Phase 1: Setup (Shared Infrastructure)
 
-**Purpose**: Project initialization, Docker and basic repo config
+**Purpose**: Project initialization and basic structure
 
-- [ ] T001 [P] Create Symfony project skeleton (composer.json, config/, src/, templates/) at repository root
-- [ ] T002 [P] Add Docker Compose with PHP, Nginx, Postgres and Mailpit in docker/ and docker-compose.yml
-- [ ] T003 [P] Add basic README quickstart and update specs/mabanza-alexis/quickstart.md
-- [ ] T004 [P] Add project Makefile with common commands (`make start`, `make test`) at repository root
-- [ ] T005 [P] Configure GitHub CI placeholders for `phpunit` and `behat` (./.github/workflows/ci.yml)
+- [x] T001 Initialize Symfony project per plan.md structure in repository root
+- [x] T002 Set up Docker Compose environment with PHP 8.4, PostgreSQL, Nginx, and Mailpit in docker-compose.yml
+- [x] T003 [P] Configure PHPUnit and Behat testing tools in phpunit.xml.dist and behat.yml
+- [x] T004 Install and configure Composer dependencies in composer.json
+- [x] T005 [P] Setup frontend assets configuration with Bootstrap in assets/
 
 ---
 
 ## Phase 2: Foundational (Blocking Prerequisites)
 
-**Purpose**: Core infra that blocks user stories (DB, auth, mailer, migrations)
+**Purpose**: Core infrastructure that MUST be complete before ANY user story can be implemented
 
-- [ ] T006 Setup Doctrine and initial migration configuration (config/packages/doctrine.yaml, migrations/)
-- [ ] T007 [P] Implement base security system and user provider (src/Security/, config/packages/security.yaml)
-- [ ] T008 [P] Configure Symfony Mailer and local mail catcher wiring (config/packages/mailer.yaml, docker/mailpit)
-- [ ] T009 Create core entities: `src/Entity/RegistrationApplication.php`, `src/Entity/Member.php`, `src/Entity/PasswordSetupToken.php`, `src/Entity/PrivateMessage.php`
-- [ ] T010 [P] Add repositories and basic Doctrine mappings for the core entities (src/Repository/)
-- [ ] T011 [P] Add database fixtures and example data for local testing (tests/fixtures/)
-- [ ] T012 Create database migration files for core entities (migrations/)
-- [ ] T013 [P] Implement common services: `src/Service/RegistrationService.php`, `src/Service/MemberService.php`, `src/Service/MessagingService.php`
-- [ ] T014 Implement a console command skeleton `src/Command/ReviewRegistrationCommand.php` wired in services.yaml
-- [ ] T015 [P] Add basic PHPUnit and Behat config files (phpunit.xml, behat.yml) and CI integration tests placeholders
+**⚠️ CRITICAL**: No user story work can begin until this phase is complete
+
+- [ ] T006 Configure database connection and migrations structure in config/packages/doctrine.yaml
+- [ ] T007 Configure mailer credentials and transport in config/packages/mailer.yaml
+- [ ] T008 Configure security framework, firewalls, and hashing in config/packages/security.yaml
+- [ ] T009 Create base user security class mapping to MemberAccount in src/Security/User.php
+
+**Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
 ---
 
 ## Phase 3: User Story 1 - S'inscrire au portail (Priority: P1) 🎯 MVP
 
-**Goal**: Provide public registration form that creates a `RegistrationApplication` in pending state
+**Goal**: Candidate fills out a registration form with sensitive/fighter details, saving a pending request.
 
-**Independent Test**: Submitting valid form creates a pending `RegistrationApplication`; invalid submission shows errors and does not persist.
+**Independent Test**: Submitting the form with valid data creates a pending request without granting portal access.
 
-### Tests
-- [ ] T016 [P] [US1] Add functional PHPUnit test for registration form at tests/Functional/RegistrationTest.php
-- [ ] T017 [P] [US1] Add Behat scenario for registration journey in features/registration.feature
+### Tests for User Story 1
 
-### Implementation
-- [ ] T018 [P] [US1] Create registration form type `src/Form/RegistrationApplicationType.php`
-- [ ] T019 [US1] Create controller `src/Controller/RegistrationController.php` with `GET/POST /register` and template `templates/registration/register.html.twig`
-- [ ] T020 [US1] Add server-side validators for SSN and CERFA uniqueness and field constraints (src/Validator/ or Doctrine unique constraints)
-- [ ] T021 [US1] Persist `RegistrationApplication` on valid submission (src/Controller/ and src/Service/RegistrationService.php)
-- [ ] T022 [US1] Add user-facing flash messages and form error handling in templates
+> **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-**Checkpoint**: Registration produces a pending application and no portal access.
+- [ ] T010 [P] [US1] Write unit tests for RegistrationRequest entity validation in tests/Unit/Entity/RegistrationRequestTest.php
+- [ ] T011 [P] [US1] Write Behat scenarios for registration form submission in features/registration.feature
+
+### Implementation for User Story 1
+
+- [ ] T012 [P] [US1] Create RegistrationRequest Doctrine entity and repository in src/Entity/RegistrationRequest.php and src/Repository/RegistrationRequestRepository.php
+- [ ] T013 [US1] Create RegistrationRequest database migration in migrations/
+- [ ] T014 [US1] Implement registration form component using Symfony UX in src/Twig/Components/RegistrationForm.php and templates/components/RegistrationForm.html.twig
+- [ ] T015 [US1] Implement registration controller and routes in src/Controller/RegistrationController.php and templates/registration/register.html.twig
+- [ ] T016 [US1] Add custom validators for uniqueness of SSN and CERFA 666 in src/Validator/UniqueRegistrationField.php and src/Validator/UniqueRegistrationFieldValidator.php
+
+**Checkpoint**: At this point, User Story 1 should be fully functional and testable independently
 
 ---
 
 ## Phase 4: User Story 2 - Valider une candidature (Priority: P2)
 
-**Goal**: Implement CLI-only admin review to approve or reject applications and trigger email for approved ones
+**Goal**: Admin approves or rejects a registration request from Symfony Console command.
 
-**Independent Test**: Running the console command against a pending application marks it approved or rejected and avoids double-processing.
+**Independent Test**: Running the console review command on a pending request changes status and prepares member account + queues validation email.
 
-### Tests
-- [ ] T023 [P] [US2] Add PHPUnit test for `ReviewRegistrationCommand` in tests/Unit/Command/ReviewRegistrationCommandTest.php
+### Tests for User Story 2
 
-### Implementation
-- [ ] T024 [US2] Implement `src/Command/ReviewRegistrationCommand.php` to approve/reject by registration ID (contract: bin/console app:review-registration <id> --decision=approve|reject)
-- [ ] T025 [US2] Implement `src/Service/ReviewService.php` that the command uses to change state, create `Member` on approve, and create `PasswordSetupToken`
-- [ ] T026 [US2] On approval, send validation email with a single-use token using `src/Message/SendValidationEmailMessage.php` or direct Mailer call; template `templates/emails/validation.html.twig`
-- [ ] T027 [US2] Ensure idempotency checks: command refuses to re-process already-handled applications
+- [ ] T017 [P] [US2] Write unit tests for RegistrationReviewService in tests/Unit/Service/RegistrationReviewServiceTest.php
+- [ ] T018 [P] [US2] Write functional tests for review command in tests/Functional/Command/ReviewRegistrationCommandTest.php
 
-**Checkpoint**: Admin can approve via CLI and approved candidates receive an email with a token.
+### Implementation for User Story 2
+
+- [ ] T019 [P] [US2] Create MemberAccount entity and repository in src/Entity/MemberAccount.php and src/Repository/MemberAccountRepository.php
+- [ ] T020 [P] [US2] Create ValidationToken entity and repository in src/Entity/ValidationToken.php and src/Repository/ValidationTokenRepository.php
+- [ ] T021 [US2] Create MemberAccount and ValidationToken migration in migrations/
+- [ ] T022 [US2] Implement RegistrationReviewService containing approval and rejection business rules in src/Service/RegistrationReviewService.php
+- [ ] T023 [US2] Implement console review command in src/Command/ReviewRegistrationCommand.php
+- [ ] T024 [US2] Create ValidationEmailSender service to send personal validation link in src/Service/ValidationEmailSender.php
+
+**Checkpoint**: At this point, User Stories 1 AND 2 should both work independently
 
 ---
 
 ## Phase 5: User Story 3 - Finaliser l'accès par email et mot de passe (Priority: P3)
 
-**Goal**: Provide the validation link flow that forces password creation and unblocks portal access
+**Goal**: Approved member opens validation link, sets password, and account state transitions to active.
 
-**Independent Test**: Visiting the emailed link leads to password creation page; until password set, portal pages are blocked.
+**Independent Test**: Following the valid token link directs user to password creation, blocks navigation to portal, and activates account once password is set.
 
-### Tests
-- [ ] T028 [P] [US3] Add functional PHPUnit test for token consumption and password setup at tests/Functional/PasswordSetupTest.php
-- [ ] T029 [P] [US3] Add Behat scenario for the full approved→email→password setup journey in features/password_setup.feature
+### Tests for User Story 3
 
-### Implementation
-- [ ] T030 [US3] Create route and controller `src/Controller/PasswordSetupController.php` with template `templates/registration/password_setup.html.twig`
-- [ ] T031 [US3] Implement single-use `PasswordSetupToken` consumption, expiry checks, and password hashing (src/Service/TokenService.php)
-- [ ] T032 [US3] Enforce access guard: until Member has a password, any portal route redirects to password setup (src/Security/PasswordCompletionVoter or firewall/guard)
-- [ ] T033 [US3] Add UI and success redirect to portal after password set
+- [ ] T025 [P] [US3] Write unit and functional tests for token verification and password creation in tests/Functional/Controller/PasswordSetupControllerTest.php
+- [ ] T026 [P] [US3] Write Behat scenarios for validation link click and password setup journey in features/password_setup.feature
 
-**Checkpoint**: Approved users can set password and then access the portal; un-finalized accounts are blocked.
+### Implementation for User Story 3
+
+- [ ] T027 [US3] Implement token verification logic and redirect in src/Controller/ValidationController.php
+- [ ] T028 [US3] Implement password setup page with form validation in src/Controller/PasswordSetupController.php and templates/auth/password_setup.html.twig
+- [ ] T029 [US3] Implement security voter or subscriber to block all portal access for awaiting_password accounts in src/Security/PasswordSetupRequiredSubscriber.php
+- [ ] T030 [US3] Update User provider and authentication configuration to support login after activation in src/Security/MemberProvider.php and config/packages/security.yaml
+
+**Checkpoint**: All user stories should now be independently functional
 
 ---
 
 ## Phase 6: User Story 4 - Échanger des messages discrètement (Priority: P4)
 
-**Goal**: Implement private messaging between active members
+**Goal**: Active members exchange private messages in the secure portal area.
 
-**Independent Test**: Two active members can send/receive messages; non-authenticated users cannot access messaging.
+**Independent Test**: Two active members can send and read private messages, while anonymous/unactivated/other users are blocked.
 
-### Tests
-- [ ] T034 [P] [US4] Add integration PHPUnit test for messaging flow at tests/Functional/MessagingTest.php
+### Tests for User Story 4
 
-### Implementation
-- [ ] T035 [P] [US4] Create `src/Entity/PrivateMessage.php` and repository for message queries
-- [ ] T036 [US4] Implement messaging service `src/Service/MessagingService.php` and controller `src/Controller/MessagingController.php`
-- [ ] T037 [US4] Add templates `templates/portal/messages/*` and protect routes with security rules
+- [ ] T031 [P] [US4] Write functional tests for private messaging in tests/Functional/Controller/MessageControllerTest.php
+- [ ] T032 [P] [US4] Write Behat scenarios for secure message exchange in features/private_messaging.feature
 
-**Checkpoint**: Messaging between active members is functional and access-controlled.
+### Implementation for User Story 4
+
+- [ ] T033 [P] [US4] Create Message entity and repository in src/Entity/Message.php and src/Repository/MessageRepository.php
+- [ ] T034 [US4] Create Message database migration in migrations/
+- [ ] T035 [US4] Implement portal home dashboard in src/Controller/PortalController.php and templates/portal/index.html.twig
+- [ ] T036 [US4] Implement private messaging controller and UI in src/Controller/MessageController.php and templates/portal/messages.html.twig
+- [ ] T037 [US4] Add security authorization checks to ensure only active participants see a message in src/Security/MessageVoter.php
 
 ---
 
 ## Phase 7: Polish & Cross-Cutting Concerns
 
-- [ ] T038 [P] Write documentation updates in specs/mabanza-alexis/README.md and update `quickstart.md`
-- [ ] T039 [P] Add more unit tests and increase coverage for services
-- [ ] T040 [P] Security review and hardening: verify no PII in logs/fixtures and enforce validators
-- [ ] T041 Run quickstart validation: start Docker, run migrations, perform registration→approve→password→message scenario (document steps in `quickstart.md`)
+**Purpose**: Improvements that affect multiple user stories
+
+- [ ] T038 Update README.md with detailed instructions on running Docker, migrations, testing tools, console command, and Mailpit
+- [ ] T039 Create document d'architecture, relational schema, class UML, and flow diagrams under specs/mabanza-alexis/
+- [ ] T040 Security audit to verify that no sensitive fields are leaked in logs or error templates
+- [ ] T041 Run the entire test suite and quickstart scenarios to validate Docker reproducibility
 
 ---
 
 ## Dependencies & Execution Order
 
-- Setup (T001..T005) → Foundational (T006..T015) → User Stories (T016..T037) → Polish (T038..T041)
-- Within each story: Tests (T016,T017...) should be written before implementation tasks in that story and run to fail-first
+### Phase Dependencies
 
-## Parallel opportunities identified
+- **Setup (Phase 1)**: No dependencies - can start immediately
+- **Foundational (Phase 2)**: Depends on Setup completion - BLOCKS all user stories
+- **User Stories (Phase 3+)**: All depend on Foundational phase completion
+  - User stories can then proceed sequentially in priority order (P1 → P2 → P3 → P4) or in parallel if needed.
+- **Polish (Final Phase)**: Depends on all desired user stories being complete
 
-- Setup tasks T001..T005 are parallelizable ([P])
-- Foundational tasks T007, T008, T010, T011, T013 are parallelizable
-- Tests for stories (T016,T017,T023,T028,T029,T034) can be implemented in parallel with non-dependent model tasks
-- Different user stories (US1..US4) can be implemented in parallel once foundational tasks complete
+### User Story Dependencies
 
-## Implementation strategy (MVP)
+- **User Story 1 (P1)**: Can start after Foundational (Phase 2) - No dependencies on other stories
+- **User Story 2 (P2)**: Can start after Foundational (Phase 2) - Integrates with US1
+- **User Story 3 (P3)**: Can start after Foundational (Phase 2) - Integrates with US1/US2
+- **User Story 4 (P4)**: Can start after Foundational (Phase 2) - Integrates with US1/US2/US3
 
-- MVP scope: deliver Phase 1 + Phase 2 + Phase 3 (US1) to have a working registration flow and pending applications
-- Next increment: add US2 and US3 to enable approval and finalization
+### Within Each User Story
+
+- Tests MUST be written and FAIL before implementation
+- Models before services
+- Services before endpoints
+- Core implementation before integration
+- Story complete before moving to next priority
+
+### Parallel Opportunities
+
+- All Setup tasks marked [P] can run in parallel
+- All Foundational tasks marked [P] can run in parallel
+- Once Foundational phase completes, user stories can start in parallel (if team capacity allows)
+- All tests for a user story marked [P] can run in parallel
+- Models within a story marked [P] can run in parallel
+
+---
+
+## Parallel Example: User Story 1
+
+```bash
+# Launch all models for User Story 1 together:
+Task: "Create RegistrationRequest Doctrine entity and repository in src/Entity/RegistrationRequest.php and src/Repository/RegistrationRequestRepository.php"
+
+# Launch all tests for User Story 1 together:
+Task: "Write unit tests for RegistrationRequest entity validation in tests/Unit/Entity/RegistrationRequestTest.php"
+Task: "Write Behat scenarios for registration form submission in features/registration.feature"
+```
+
+---
+
+## Implementation Strategy
+
+### MVP First (User Story 1 Only)
+
+1. Complete Phase 1: Setup
+2. Complete Phase 2: Foundational (CRITICAL - blocks all stories)
+3. Complete Phase 3: User Story 1
+4. **STOP and VALIDATE**: Test User Story 1 independently
+5. Deploy/demo if ready
+
+### Incremental Delivery
+
+1. Complete Setup + Foundational → Foundation ready
+2. Add User Story 1 → Test independently → Deploy/Demo (MVP!)
+3. Add User Story 2 → Test independently → Deploy/Demo
+4. Add User Story 3 → Test independently → Deploy/Demo
+5. Add User Story 4 → Test independently → Deploy/Demo
+6. Each story adds value without breaking previous stories
