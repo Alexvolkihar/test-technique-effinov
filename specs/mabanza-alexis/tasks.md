@@ -41,10 +41,10 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T006 Configure database connection and migrations structure in config/packages/doctrine.yaml
-- [ ] T007 Configure mailer credentials and transport in config/packages/mailer.yaml
-- [ ] T008 Configure security framework, firewalls, and hashing in config/packages/security.yaml
-- [ ] T009 Create base user security class mapping to MemberAccount in src/Security/User.php
+- [x] T006 Configure database connection and migrations structure in config/packages/doctrine.yaml
+- [x] T007 Configure mailer credentials and transport in config/packages/mailer.yaml
+- [x] T008 Configure security framework, firewalls, and hashing in config/packages/security.yaml
+- [x] T009 Create base user security class mapping to MemberAccount in src/Security/User.php
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
