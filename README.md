@@ -163,24 +163,24 @@ docker compose exec php vendor/bin/behat
 ### Captures d'écran de l'application
 
 * **Formulaire d'inscription :**
-  ![Formulaire d'inscription](specs/mabanza-alexis/Form.webp)
+  ![Formulaire d'inscription](specs/mabanza-alexis/images/Form.webp)
 
 * **Mailpit (Interception de l'e-mail de validation) :**
-  ![Mailpit](specs/mabanza-alexis/Mailpit.webp)
+  ![Mailpit](specs/mabanza-alexis/images/Mailpit.webp)
 
 * **Page de Connexion :**
-  ![Page de Connexion](specs/mabanza-alexis/login.webp)
+  ![Page de Connexion](specs/mabanza-alexis/images/login.webp)
 
 * **Portail Membre :**
-  ![Portail Membre](specs/mabanza-alexis/portal.webp)
+  ![Portail Membre](specs/mabanza-alexis/images/portal.webp)
 
 * **Messagerie Chiffrée :**
-  ![Messagerie Chiffrée](specs/mabanza-alexis/Chat.webp)
+  ![Messagerie Chiffrée](specs/mabanza-alexis/images/Chat.webp)
 
 ### Démo Vidéo (Userflow)
 
 Une démonstration complète du parcours utilisateur est disponible en vidéo afin de faciliter l'échange durant la restitution:
-🎥 **[Visionner la vidéo UserFlow.webm](specs/mabanza-alexis/UserFlow.webm)**
+🎥 **[Visionner la vidéo UserFlow.webm](specs/mabanza-alexis/video/UserFlow.webm)**
 
 ---
 
