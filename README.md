@@ -186,8 +186,19 @@ Une démonstration complète du parcours utilisateur est disponible en vidéo af
 
 ## 📂 Architecture Documentaire
 Les spécifications et documentations techniques se trouvent dans le répertoire [specs/mabanza-alexis/](specs/mabanza-alexis/) :
-* [plan.md](specs/mabanza-alexis/plan.md) : Plan d'implémentation
-* [data-model.md](specs/mabanza-alexis/data-model.md) : Modèle de données & relations
-* [research.md](specs/mabanza-alexis/research.md) : Décisions techniques
-* [quickstart.md](specs/mabanza-alexis/quickstart.md) : Guide de démarrage rapide
-* [contracts/](specs/mabanza-alexis/contracts/) : Spécification des parcours utilisateurs
+
+* **[architecture.md](specs/mabanza-alexis/architecture.md)** : **Document d'architecture** global (décisions techniques, audit de sécurité et logs).
+* **[data-model.md](specs/mabanza-alexis/data-model.md)** : Détail textuel du modèle de données (champs, contraintes et relations).
+* **[research.md](specs/mabanza-alexis/research.md)** : Analyse de l'existant et décisions d'architecture.
+* **[quickstart.md](specs/mabanza-alexis/quickstart.md)** : Guide de démarrage rapide pour les développeurs.
+* **[contracts/](specs/mabanza-alexis/contracts/)** : Spécification des parcours et scénarios utilisateurs.
+
+### 📊 Localisation des Schémas et Diagrammes requis :
+Conformément aux consignes du test, voici où trouver chaque schéma :
+* 📐 **Document d'architecture** : [architecture.md](specs/mabanza-alexis/architecture.md)
+* 🗃️ **Schéma relationnel (MCD)** : [architecture.md#schema-relationnel-database](specs/mabanza-alexis/architecture.md#schema-relationnel-database) (représentation Mermaid ERD)
+* 📊 **Diagramme de classes (UML)** : [architecture.md#uml-class-diagram](specs/mabanza-alexis/architecture.md#uml-class-diagram) (représentation Mermaid Class Diagram)
+* 🔄 **Diagramme de flux (UML)** : 
+  - Flux d'inscription et de validation : [architecture.md#1-inscription-et-validation-dun-nouveau-membre](specs/mabanza-alexis/architecture.md#1-inscription-et-validation-dun-nouveau-membre) (diagramme de séquence Mermaid)
+  - Flux d'échange de messages sécurisés : [architecture.md#2-echange-de-messages-secures](specs/mabanza-alexis/architecture.md#2-echange-de-messages-secures) (diagramme de séquence Mermaid)
+  - Diagramme de transitions d'états des entités : [data-model.md#state-transitions](specs/mabanza-alexis/data-model.md#state-transitions) (diagramme d'états Mermaid)
