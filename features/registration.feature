@@ -9,7 +9,7 @@ Feature: Candidate Registration
     And I fill in "Prénom" with "Tyler"
     And I fill in "Adresse" with "Paper Street"
     And I fill in "Date de naissance" with "1980-05-15"
-    And I fill in "Numéro de sécurité sociale" with "180051512345678"
+    And I fill in "Numéro de sécurité sociale" with "180051512345695"
     And I fill in "Pseudo" with "soap_maker"
     And I fill in "Numéro d'accréditation" with "CERFA-666-999"
     And I select "Salamèche" from "Starter Pokémon"
@@ -30,7 +30,7 @@ Feature: Candidate Registration
     And I fill in "Prénom" with "Tyler"
     And I fill in "Adresse" with "Paper Street"
     And I fill in "Date de naissance" with "2015-05-15"
-    And I fill in "Numéro de sécurité sociale" with "180051512345678"
+    And I fill in "Numéro de sécurité sociale" with "115051512345679"
     And I fill in "Pseudo" with "soap_maker"
     And I fill in "Numéro d'accréditation" with "CERFA-666-999"
     And I select "Salamèche" from "Starter Pokémon"
@@ -58,7 +58,7 @@ Feature: Candidate Registration
     And I fill in "Prénom" with "Tyler"
     And I fill in "Adresse" with "Paper Street"
     And I fill in "Date de naissance" with "1980-05-15"
-    And I fill in "Numéro de sécurité sociale" with "180051512345678"
+    And I fill in "Numéro de sécurité sociale" with "180051512345695"
     And I fill in "Pseudo" with "soap_maker"
     And I fill in "Numéro d'accréditation" with "CERFA-777-999"
     And I select "Salamèche" from "Starter Pokémon"
@@ -67,13 +67,13 @@ Feature: Candidate Registration
     Then I should see validation errors
 
   Scenario: Fail to register with a duplicate SSN (discreet error message)
-    Given a registration request exists with SSN "180051512345678"
+    Given a registration request exists with SSN "190011512345626"
     When I go to the registration page
     And I fill in "Nom" with "Singer"
     And I fill in "Prénom" with "Marla"
     And I fill in "Adresse" with "Wilmington"
-    And I fill in "Date de naissance" with "1985-08-20"
-    And I fill in "Numéro de sécurité sociale" with "180051512345678"
+    And I fill in "Date de naissance" with "1990-01-01"
+    And I fill in "Numéro de sécurité sociale" with "190011512345626"
     And I fill in "Pseudo" with "marla_singer"
     And I fill in "Numéro d'accréditation" with "CERFA-666-888"
     And I select "Carapuce" from "Starter Pokémon"

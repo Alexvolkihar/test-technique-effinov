@@ -26,7 +26,7 @@ class ReviewRegistrationCommandTest extends KernelTestCase
             ->setLastName('Durden')
             ->setAddress('Paper Street')
             ->setBirthDate(new \DateTime('1980-05-15'))
-            ->setSocialSecurityNumber('180051512345678')
+            ->setSocialSecurityNumber('180051512345695')
             ->setFighterNickname('soap')
             ->setFighterCertificationNumber('CERFA-666-999')
             ->setPokemonStarter('Salamèche')

@@ -8,6 +8,7 @@ use App\Repository\RegistrationRequestRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Validator\UniqueRegistrationField;
+use App\Validator\FrenchNir;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: RegistrationRequestRepository::class)]
@@ -41,7 +42,7 @@ class RegistrationRequest
 
     #[ORM\Column(type: Types::STRING, length: 255, unique: true)]
     #[Assert\NotBlank(message: 'Le numéro de sécurité sociale est obligatoire.')]
-    #[Assert\Regex(pattern: '/^[0-9]{15}$/', message: 'Le numéro de sécurité sociale doit être composé de 15 chiffres.')]
+    #[FrenchNir]
     private ?string $socialSecurityNumber = null;
 
     #[ORM\Column(type: Types::STRING, length: 255)]

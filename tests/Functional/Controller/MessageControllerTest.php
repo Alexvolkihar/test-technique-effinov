@@ -27,12 +27,17 @@ class MessageControllerTest extends WebTestCase
 
     private function createActiveMember(string $email, string $displayNumber): MemberAccount
     {
+        $randNum = (string)random_int(100000, 999999);
+        $nir13 = '1900115' . $randNum;
+        $key = 97 - ((int)$nir13 % 97);
+        $nir = $nir13 . sprintf('%02d', $key);
+
         $request = new RegistrationRequest();
         $request->setFirstName('First')
             ->setLastName('Last')
             ->setAddress('Address')
             ->setBirthDate(new \DateTime('1990-01-01'))
-            ->setSocialSecurityNumber(str_pad((string)random_int(100000, 999999), 15, '1'))
+            ->setSocialSecurityNumber($nir)
             ->setFighterNickname('nick_' . $displayNumber)
             ->setFighterCertificationNumber('CERFA-666-' . random_int(1000, 9999))
             ->setPokemonStarter('Salamèche')
@@ -67,7 +72,7 @@ class MessageControllerTest extends WebTestCase
             ->setLastName('User')
             ->setAddress('Address')
             ->setBirthDate(new \DateTime('1990-01-01'))
-            ->setSocialSecurityNumber('180051512345678')
+            ->setSocialSecurityNumber('190011512345626')
             ->setFighterNickname('awaiting')
             ->setFighterCertificationNumber('CERFA-666-999')
             ->setPokemonStarter('Salamèche')

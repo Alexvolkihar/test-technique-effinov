@@ -24,7 +24,7 @@ class RegistrationRequestTest extends KernelTestCase
             ->setLastName('Doe')
             ->setAddress('123 Fight Street')
             ->setBirthDate(new \DateTime('1990-01-01'))
-            ->setSocialSecurityNumber('123456789012345')
+            ->setSocialSecurityNumber('190011512345626')
             ->setFighterNickname('TheOne')
             ->setFighterCertificationNumber('CERFA-666-12345')
             ->setPokemonStarter('Salamèche')
@@ -41,7 +41,7 @@ class RegistrationRequestTest extends KernelTestCase
             ->setLastName('Doe')
             ->setAddress('123 Fight Street')
             ->setBirthDate(new \DateTime('1990-01-01'))
-            ->setSocialSecurityNumber('123456789012345')
+            ->setSocialSecurityNumber('190011512345626')
             ->setFighterNickname('TheOne')
             ->setFighterCertificationNumber('CERFA-666-12345')
             ->setPokemonStarter('Pikachu') // Invalid
@@ -83,7 +83,7 @@ class RegistrationRequestTest extends KernelTestCase
             ->setLastName('Doe')
             ->setAddress('123 Fight Street')
             ->setBirthDate(new \DateTime('1990-01-01'))
-            ->setSocialSecurityNumber('180051512345678')
+            ->setSocialSecurityNumber('190011512345626')
             ->setFighterNickname('TheOne')
             ->setFighterCertificationNumber('CERFA-777-12345') // Invalid (not 666)
             ->setPokemonStarter('Salamèche')
@@ -95,13 +95,20 @@ class RegistrationRequestTest extends KernelTestCase
 
     public function testUnderageCandidate(): void
     {
+        $birthDate = (new \DateTime())->modify('-10 years');
+        $yy = $birthDate->format('y');
+        $mm = $birthDate->format('m');
+        $nir13 = '1' . $yy . $mm . '15123456';
+        $key = 97 - ((int)$nir13 % 97);
+        $nir = $nir13 . sprintf('%02d', $key);
+
         $request = new RegistrationRequest();
         $request->setFirstName('John')
             ->setLastName('Doe')
             ->setAddress('123 Fight Street')
             // Born 10 years ago (minor)
-            ->setBirthDate((new \DateTime())->modify('-10 years'))
-            ->setSocialSecurityNumber('180051512345678')
+            ->setBirthDate($birthDate)
+            ->setSocialSecurityNumber($nir)
             ->setFighterNickname('TheOne')
             ->setFighterCertificationNumber('CERFA-666-12345')
             ->setPokemonStarter('Salamèche')
