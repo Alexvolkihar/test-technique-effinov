@@ -11,6 +11,10 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class FrenchNirValidator extends ConstraintValidator
 {
+    public function __construct(
+        private bool $strictNirValidation
+    ) {}
+
     public function validate(mixed $value, Constraint $constraint): void
     {
         if (!$constraint instanceof FrenchNir) {
@@ -27,6 +31,15 @@ class FrenchNirValidator extends ConstraintValidator
 
         // Strip spaces, dashes, and dots
         $normalizedNir = str_replace([' ', '-', '.'], '', strtoupper($value));
+
+        if (!$this->strictNirValidation) {
+            // Non-strict mode: check 15-character length
+            if (strlen($normalizedNir) !== 15) {
+                $this->context->buildViolation($constraint->messageFormat)
+                    ->addViolation();
+            }
+            return;
+        }
 
         // Format validation (15 characters)
         // 1 or 2 (gender)

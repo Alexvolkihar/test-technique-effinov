@@ -139,6 +139,22 @@ docker compose exec php bin/console app:review-registration <id> --decision=reje
 ```
 * **Effet** : La demande passe au statut `rejected` et le motif est enregistré dans le champ `reviewNote`.
 
+### ⚡ Mode Interactif (Recommandé)
+Pour une meilleure expérience d'administration, vous pouvez lancer la commande de traitement sans aucun argument pour démarrer l'assistant interactif :
+```bash
+docker compose exec php bin/console app:review-registration
+```
+* **Fonctionnalités** : Cet assistant liste les demandes en attente de validation, vous invite à en sélectionner une par son ID ou nom, vous propose de choisir l'action (`Approuver`, `Rejeter` ou `Annuler`), et vous demande de saisir le motif en cas de refus.
+
+---
+
+## ⚙️ Configuration de la validation du NIR (Sécurité sociale)
+
+La validation du numéro de sécurité sociale français (NIR) est configurable via la variable d'environnement `STRICT_NIR_VALIDATION` dans vos fichiers `.env` :
+
+* **`STRICT_NIR_VALIDATION=true`** (Défaut en Production & Tests) : Active la validation stricte. Le NIR doit comporter 15 chiffres (ou inclure `2A`/`2B` pour la Corse), posséder une clé de contrôle correcte (modulo 97), et correspondre exactement à l'année et au mois de la date de naissance saisie.
+* **`STRICT_NIR_VALIDATION=false`** (Défaut en **Développement**) : Désactive la validation stricte. Seule la longueur de 15 caractères est vérifiée. Cela facilite les tests manuels du formulaire d'inscription en local avec des numéros de test fictifs (ex: `123456789012345`).
+
 ---
 
 ## 🧪 Exécution des Tests

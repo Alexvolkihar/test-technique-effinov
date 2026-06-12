@@ -30,7 +30,7 @@ class ReviewRegistrationCommand extends Command
     protected function configure(): void
     {
         $this
-            ->addArgument('registrationId', InputArgument::REQUIRED, 'ID of the registration request')
+            ->addArgument('registrationId', InputArgument::OPTIONAL, 'ID of the registration request')
             ->addOption('decision', null, InputOption::VALUE_REQUIRED, 'Decision: approve or reject')
             ->addOption('reason', null, InputOption::VALUE_OPTIONAL, 'Reason for rejection');
     }
@@ -38,24 +38,85 @@ class ReviewRegistrationCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        $registrationId = (int)$input->getArgument('registrationId');
+        $registrationId = $input->getArgument('registrationId');
         $decision = $input->getOption('decision');
         $reason = $input->getOption('reason');
 
-        if (!in_array($decision, ['approve', 'reject'], true)) {
-            $io->error('Decision must be "approve" or "reject".');
-            return Command::INVALID;
-        }
+        // Check if we need to enter interactive mode
+        if (null === $registrationId) {
+            $io->title('Fight Club - Portail d\'Administration (Mode Interactif)');
+            
+            // 1. Fetch pending requests
+            $pendingRequests = $this->repository->findBy(['status' => 'pending'], ['id' => 'ASC']);
+            
+            if (empty($pendingRequests)) {
+                $io->info('Aucune demande d\'inscription en attente.');
+                return Command::SUCCESS;
+            }
+            
+            // 2. Build choices list
+            $choices = [];
+            $requestMap = [];
+            foreach ($pendingRequests as $req) {
+                $label = sprintf('#%d - %s %s (%s)', $req->getId(), $req->getFirstName(), $req->getLastName(), $req->getEmailAddress());
+                $choices[$req->getId()] = $label;
+                $requestMap[$label] = $req;
+            }
+            
+            // Allow cancelling
+            $choices['cancel'] = 'Annuler l\'opération';
+            
+            $selectedLabel = $io->choice('Sélectionnez une demande d\'inscription à traiter :', $choices);
+            
+            if ('Annuler l\'opération' === $selectedLabel || 'cancel' === $selectedLabel) {
+                $io->warning('Opération annulée.');
+                return Command::SUCCESS;
+            }
+            
+            $request = $requestMap[$selectedLabel] ?? $this->repository->find((int)$selectedLabel);
+            
+            if (null === $request) {
+                $io->error('Demande d\'inscription introuvable.');
+                return Command::FAILURE;
+            }
+            
+            $registrationId = $request->getId();
+            
+            // 3. Ask for decision
+            $decisionChoice = $io->choice(
+                sprintf('Quelle décision pour %s %s ?', $request->getFirstName(), $request->getLastName()),
+                ['Approuver', 'Rejeter', 'Annuler']
+            );
+            
+            if ('Annuler' === $decisionChoice) {
+                $io->warning('Opération annulée.');
+                return Command::SUCCESS;
+            }
+            
+            $decision = ('Approuver' === $decisionChoice) ? 'approve' : 'reject';
+            
+            // 4. Ask for reason if reject
+            if ('reject' === $decision) {
+                $reason = $io->ask('Quel est le motif du refus ? (Optionnel)');
+            }
+        } else {
+            // Non-interactive mode validation
+            $registrationId = (int)$registrationId;
+            if (!in_array($decision, ['approve', 'reject'], true)) {
+                $io->error('Decision must be "approve" or "reject".');
+                return Command::INVALID;
+            }
 
-        $request = $this->repository->find($registrationId);
-        if (null === $request) {
-            $io->error(sprintf('Registration request #%d not found.', $registrationId));
-            return Command::FAILURE;
-        }
+            $request = $this->repository->find($registrationId);
+            if (null === $request) {
+                $io->error(sprintf('Registration request #%d not found.', $registrationId));
+                return Command::FAILURE;
+            }
 
-        if ('pending' !== $request->getStatus()) {
-            $io->error(sprintf('Registration request #%d is already "%s".', $registrationId, $request->getStatus()));
-            return Command::FAILURE;
+            if ('pending' !== $request->getStatus()) {
+                $io->error(sprintf('Registration request #%d is already "%s".', $registrationId, $request->getStatus()));
+                return Command::FAILURE;
+            }
         }
 
         try {
